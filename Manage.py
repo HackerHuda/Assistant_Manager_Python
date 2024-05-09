@@ -11,22 +11,22 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor()
 
-create_table_query = """
-CREATE TABLE IF NOT EXISTS assistant (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    mobile VARCHAR(20),
-    email VARCHAR(255),
-    salary DECIMAL(10, 2),
-    city VARCHAR(100),
-    country VARCHAR(100),
-    department VARCHAR(100),
-    role VARCHAR(100)
-)
-"""
-cursor.execute(create_table_query)
+# create_table_query = """
+# CREATE TABLE IF NOT EXISTS assistant (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     name VARCHAR(255),
+#     mobile VARCHAR(20),
+#     email VARCHAR(255),
+#     salary DECIMAL(10, 2),
+#     city VARCHAR(100),
+#     country VARCHAR(100),
+#     department VARCHAR(100),
+#     role VARCHAR(100)
+# )
+# """
+# cursor.execute(create_table_query)
 
-
+#create an assistant
 @app.route('/assistant', methods=['POST'])
 def create_assistant():
     data = request.json
@@ -48,7 +48,7 @@ def create_assistant():
 
     return jsonify({'id': cursor.lastrowid}), 201
 
-#find bt ID
+#find by ID
 @app.route('/assistant/<int:assistant_id>', methods=['GET'])
 def get_assistant(assistant_id):
     query = "SELECT * FROM assistant WHERE id = %s"
@@ -70,8 +70,8 @@ def get_assistant(assistant_id):
         return jsonify(assistant_details)
     else:
         return jsonify({'message': 'Assistant not found'}), 404
+    
 #find by name
-
 @app.route('/assistant/<string:assistant_name>', methods=['GET'])
 def get_assistant_by_name(assistant_name):
     query = "SELECT * FROM assistant WHERE name = %s"
@@ -94,6 +94,7 @@ def get_assistant_by_name(assistant_name):
     else:
         return jsonify({'message': 'Assistant not found'}), 404
 
+#update the assistants data
 @app.route('/assistant/<int:assistant_id>', methods=['PUT'])
 def update_assistant(assistant_id):
     data = request.json
@@ -116,7 +117,7 @@ def update_assistant(assistant_id):
 
     return jsonify({'message': 'Assistant updated successfully'})
 
-
+#delete assistants data
 @app.route('/assistant/<int:assistant_id>', methods=['DELETE'])
 def delete_assistant(assistant_id):
     delete_query = "DELETE FROM assistant WHERE id = %s"
@@ -125,9 +126,6 @@ def delete_assistant(assistant_id):
 
     return jsonify({'message': 'Assistant deleted successfully'})
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
