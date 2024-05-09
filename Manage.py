@@ -1,8 +1,8 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 import mysql.connector
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 db = mysql.connector.connect(
     host="127.0.0.1",
     user="root",
@@ -38,7 +38,6 @@ def create_assistant():
     country = data['country']
     department = data['department']
     role = data['role']
-
     insert_query = """
     INSERT INTO assistant (name, mobile, email, salary, city, country, department, role)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
